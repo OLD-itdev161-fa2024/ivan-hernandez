@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useHistory }  from 'react-router-dom';
 
-const Register = () => {
+const Register = ({authenticateUser}) => {
     let history = useHistory();
     const [userData, setUserData] = useState({
         name: '',
@@ -10,10 +10,10 @@ const Register = () => {
         password: '',
         passwordConfirm: ''
     });
-    const [errorData, setErrorData] = useState({ errrors: null});
 
+    const [errorData, setErrorData] = useState({erros : null});
     const { name, email, password, passwordConfirm } = userData;
-    const { errors } = errorData;
+    const {errors} = errorData;
 
     const onChange = e => {
         const { name, value } = e.target;
@@ -21,8 +21,6 @@ const Register = () => {
             ...userData, [name]: value
         })
     }
-
-
     const registerUser = async () => {
         if (password !== passwordConfirm) {
             console.log('Passwords do not match');
@@ -33,33 +31,32 @@ const Register = () => {
                 email: email,
                 password: password
             }
-
             try {
                 const config = {
                     headers: {
                         "Content-Type": "application/json"
                     }
                 }
-
                 const body = JSON.stringify(newUser);
                 const res = await axios.post('http://localhost:5000/api/users', body, config);
-                
-                // Store user data and redirect
-                localStorage.setItem('token', res.data.token);
-                history.push('/');
+
+
+              localStorage.setItem('token', res.data.token);
+              history.push('/');
             } catch (error) {
-                // Clear userdata and set errors
-                localStorage.removeItem('token')
-                
+
+                localStorage.removeItem('token');
+
                 setErrorData({
-                    ...errors,
-                    errors: error.response.data.errors
+                    ...errors, 
+                    errors : error.response.data.errors
                 })
             }
 
-            authenticateUser();
+authenticateUser();
         }
     }
+
     return (
 
         <div>
@@ -101,7 +98,7 @@ const Register = () => {
             </div>
             <div>
                 {errors && errors.map(error =>
-                    <div key={error.msg}>{error.msg}</div>)}
+                  <div key={error.msg}>{error.msg}</div>  )}
             </div>
         </div>
     )
