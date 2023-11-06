@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
 import axios from 'axios';
+import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+
 
 class App extends React.Component {
 state ={
@@ -19,16 +21,41 @@ componentDidMount(){
   })
 }
 
-  render() {
-    return (
+render(){
+  return(
+    <Router>
       <div className="App">
         <header className="App-header">
-          GoodThings
+            <h1>Good Things</h1>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/register">Register</Link>
+              </li>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+            </ul>
         </header>
-        {this.state.data}
+        <main>
+          <Route exact path="/">
+            {this.state.data}
+          </Route>
+          <Switch>
+            <Route exact path="/register">
+              Register
+              </Route>
+            <Route exact path="/login">
+              Login
+              </Route>
+          </Switch>
+        </main>
       </div>
-    );
-  }
+    </Router>
+  );
+}
 }
 
 export default App;

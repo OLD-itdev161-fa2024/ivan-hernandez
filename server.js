@@ -16,26 +16,29 @@ const app = express();
 
 connectDatabase();
 
-
-
 app.use(express.json({ extended: false }));
-
+app.use(
+    cors({
+        origin: 'http:..localhost:3000'
+    })
+);
 
 // API endpoints
 /**
  * @route GET /
  * @desc Test endpoint
  */
+
 app.get('/', (req, res) =>
     res.send('http get request sent to root api endpoint')
 );  
-
-
 
 /** 
  * @route POST api/users
  * @desc Register user
  */
+
+
 app.post(
     '/api/users',
     [
